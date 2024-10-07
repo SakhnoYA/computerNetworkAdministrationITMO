@@ -1,0 +1,27 @@
+---
+- name: Creating a test file with content
+  copy:
+    dest: $HOME/test.txt
+    content: |
+      Nikita, I am writing my graduation thesis under your guidance
+
+- name: create file and add line
+  lineinfile:
+    path:  $HOME/test.txt
+    line: This is a new line
+
+- name: Read the test file content
+  shell: cat $HOME/test.txt
+  register: output_file_content
+  tags: read_file
+
+- name: Show file content
+  debug:
+    msg: "{{ output_file_content.stdout }}"
+  tags: read_file
+
+- name: Remove the test file
+  file:
+    path: "{{ ansible_env.HOME }}/test.txt"
+    state: absent
+  tags: remove_file
